@@ -64,5 +64,12 @@ u2_p
 
 top_u2[! top_c1_p %in% u2_p]
 
+#5 version 2
+top_u2_s = filter(dcluster, Cluster == c_u2) %>% group_by(PAGE) %>% tally(sort = TRUE) %>% top_n(3) %>% select(PAGE)
+u2_p_s = filter(dcluster, USER == 'u2') %>% select(PAGE)
+top_u2_s
+u2_p_s
+
+anti_join(top_u2_s, u2_p_s) # need to use select
 
 
