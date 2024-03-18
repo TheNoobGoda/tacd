@@ -25,3 +25,40 @@ image(brm_offline)
 
 modelAR = Recommender(brm_offline,'AR')
 getModel(modelAR)
+rules = getModel(modelAR)$rule_base
+inspect(rules)
+
+
+#7
+brm_u7 = brm[7,]
+getData.frame(brm_u7)
+pred = predict(modelAR,brm_u7,n=2)
+
+getList(pred)
+
+r_u7 = subset(rules, lhs %in% c('C','F'))
+inspect(r_u7)
+
+
+#8
+brm_u8 = brm[8,]
+getData.frame(brm_u8)
+pred = predict(modelAR,brm_u8)
+
+getList(pred)
+
+r_u8 = subset(rules, lhs %in% c('C'))
+inspect(r_u8)
+
+
+#9
+recommenderRegistry$get_entries(dataType ="binaryRatingMatrix")
+
+
+#10
+model_pop = Recommender(brm_offline,"POPULAR")
+getModel(model_pop)
+brm_test = brm[7:8,]
+getData.frame(brm_test)
+pred = predict(model_pop,brm_test)
+getList(pred)
