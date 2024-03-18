@@ -60,5 +60,35 @@ model_pop = Recommender(brm_offline,"POPULAR")
 getModel(model_pop)
 brm_test = brm[7:8,]
 getData.frame(brm_test)
-pred = predict(model_pop,brm_test)
+pred = predict(model_pop,brm_test, n=2)
 getList(pred)
+
+
+
+####################### 2.3
+
+#11
+s_cos_user = similarity(brm_offline,method = "cosine",which = "users")
+s_cos_user
+s_cos_item = similarity(brm_offline,method = "cosine",which = "items")
+s_cos_item
+
+
+#12
+modelUBCF = Recommender(brm_offline, "UBCF",parameter=list(method="cosine",nn=3))
+getModel(modelUBCF)
+pred = predict(modelUBCF,brm_test,n=2)
+getList(pred)
+
+modeliBCF = Recommender(brm_offline, "iBCF",parameter=list(method="cosine",k=3))
+getModel(modeliBCF)
+pred = predict(modeliBCF,brm_test,n=2)
+getList(pred)
+
+
+#13
+recommenderRegistry$get_entries(dataType ="realRatingMatrix")
+
+
+#14
+df2 = read.csv('~/Desktop/tacd/log1Ratings.csv')
