@@ -114,3 +114,48 @@ getList(pred)
 
 similarity(rrm_offline,method = 'cosine')
 similarity(rrm_offline,method = 'cosine', which = 'items')
+
+
+############################ 2.4
+
+log = read_csv('~/Desktop/tacd/log1.csv', col_types = list(col_factor(),col_factor()))
+brm = as(as.data.frame(log),'binaryRatingMatrix')
+brm = brm[rowCounts(brm)>=2]
+
+set.seed(2021)
+e = evaluationScheme(brm, method='split', train=0.8, given=2)
+
+e
+
+
+inspect(getRatingMatrix(getData(e,'train')))
+inspect(getRatingMatrix(getData(e,'known')))
+inspect(getRatingMatrix(getData(e,'unknown')))
+
+
+methods <- list(
+  "popular" = list(name="POPULAR", param = NULL), 
+  "user-based CF" = list(name="UBCF", param = NULL), 
+  "item-based CF" =list(name="IBCF", param = NULL)
+  )
+
+results = evaluate(e,methods, type='topNList', n=c(1,3,5))
+class(results)
+avg(results)
+names(results)
+results[['popular']]
+
+
+getConfusionMatrix(results[['popular']])
+
+model1 = Recommender(getData(e,'train'),'POPULAR')
+preds1 = predict(model1, getData(e,'known'), n=3)
+getList(preds1)
+
+model2 = Recommender(getData(e,'train'),'UBCF')
+preds2 = predict(model2, getData(e,'known'), n=3)
+getList(preds2)
+
+model3 = Recommender(getData(e,'train'),'IBCF')
+preds3 = predict(model3, getData(e,'known'), n=3)
+getList(preds3)
