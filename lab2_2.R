@@ -91,11 +91,26 @@ recommenderRegistry$get_entries(dataType ="realRatingMatrix")
 
 
 #14
-df2 = read.csv('~/Desktop/tacd/log1Ratings.csv')
-brm2 = as(as.data.frame(df2),"nonBinaryRatingMatrix")
+df2 = read_csv('~/Desktop/tacd/log1Ratings.csv', col_types = list(col_factor(),col_factor(),col_integer()))
+rrm = as(as.data.frame(df2),"realRatingMatrix")
+getRatingMatrix(rrm)
+image(rrm)
 
-getData.frame(brm2)
+getData.frame(rrm)
 
-brm2_offline = brm2[1:6,]
+rrm_offline = rrm[1:6,]
+rrm_test = rrm[7:8,]
+
+modelUBCF2 = Recommender(rrm_offline, "UBCF",parameter=list(method="cosine",nn=2))
+getModel(modelUBCF2)
+pred = predict(modelUBCF2,rrm_test,type='ratings')
+getList(pred)
+
+modeliBCF2 = Recommender(rrm_offline, "iBCF",parameter=list(method="cosine",k=2))
+getModel(modeliBCF2)
+pred = predict(modeliBCF2,rrm_test,type='ratings')
+getList(pred)
 
 
+similarity(rrm_offline,method = 'cosine')
+similarity(rrm_offline,method = 'cosine', which = 'items')
