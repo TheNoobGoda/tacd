@@ -92,3 +92,10 @@ recommenderRegistry$get_entries(dataType ="realRatingMatrix")
 
 #14
 df2 = read.csv('~/Desktop/tacd/log1Ratings.csv')
+brm2 = as(as.data.frame(df2),"nonBinaryRatingMatrix")
+
+getData.frame(brm2)
+
+brm2_offline = brm2[1:6,]
+
+
