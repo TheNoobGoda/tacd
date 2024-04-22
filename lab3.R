@@ -68,3 +68,72 @@ sort(as$vector, decreasing = T)
 
 pr = page_rank(gD,damping = 0.9)
 sort(pr$vector, decreasing = T)
+
+
+
+##############################3.2##########################
+
+#3
+#a
+karate = make_graph("Zachary")
+plot(karate)
+
+
+#b
+ceb = cluster_edge_betweenness(karate)
+ceb
+
+
+#c
+plot(ceb,karate)
+
+#d
+sizes(ceb)
+membership(ceb)
+
+#e
+plot(as.hclust(ceb))
+
+#f
+cfg = cluster_fast_greedy(karate)
+cfg
+
+#g
+plot(cfg,karate)
+plot(cfg,karate,layout = layout_as_star(karate))
+sizes(cfg)
+membership(cfg)
+hc = as.hclust(cfg)
+plot(hc)
+rect.hclust(hc,3)
+
+#4
+par(mfrow = c(1,2))
+
+gU = make_graph(c('a','d',
+                  'a','f',
+                  'b','f',
+                  'c','b',
+                  'e','f',
+                  'f','c',
+                  'f','d'),
+                directed = F)
+
+ceb = cluster_edge_betweenness(gU)
+cfg = cluster_fast_greedy(gU)
+
+plot(ceb,gU,main="EB")
+plot(cfg,gU, main="FG")
+
+sizes(ceb)
+membership(ceb)
+sizes(cfg)
+membership(cfg)
+
+hceb = as.hclust(ceb)
+plot(hceb)
+rect.hclust(hceb,3)
+
+hcfg = as.hclust(cfg)
+plot(hcfg)
+rect.hclust(hcfg,2)
