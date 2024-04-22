@@ -56,3 +56,15 @@ l = layout_as_tree(gD)
 plot(gD,layout = l)
 
 plot(gD,layout=layout_nicely(gD))
+
+
+hs = hub_score(gD)
+sort(hs$vector, decreasing = T)
+
+
+as = authority_score(gD)
+sort(as$vector, decreasing = T)
+
+
+pr = page_rank(gD,damping = 0.9)
+sort(pr$vector, decreasing = T)
