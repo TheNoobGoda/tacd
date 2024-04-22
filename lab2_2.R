@@ -159,3 +159,9 @@ getList(preds2)
 model3 = Recommender(getData(e,'train'),'IBCF')
 preds3 = predict(model3, getData(e,'known'), n=3)
 getList(preds3)
+
+
+plot(results, annotate=TRUE)
+
+
+plot(results, "prec/rec", annotate=TRUE)
