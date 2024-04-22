@@ -137,3 +137,6 @@ rect.hclust(hceb,3)
 hcfg = as.hclust(cfg)
 plot(hcfg)
 rect.hclust(hcfg,2)
+
+
+
