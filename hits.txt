@@ -1,0 +1,15 @@
+Hits:
+	- computes score for:
+		-hubs
+		-authorities
+	- provides user with authorities scores
+
+PageRank:
+	- compute scores for PageRank
+	- Decide on the damping value
+	- provide user with final PageRank
+
+Communities:
+	- to identify communiteis there are several algorithms
+	- "edge-betweeness" -> computatinally demanding
+	- "fast-greddy" which provides different results and has different need for resources
