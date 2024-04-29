@@ -47,3 +47,19 @@ as.matrix(dtm_tfidf)
 sim2(as.matrix(dtm_tf),method = 'cosine')
 sim2(as.matrix(dtm_bin),method = 'cosine')
 sim2(as.matrix(dtm_tfidf),method = 'cosine')
+
+
+#2
+
+cq = Corpus(VectorSource("data mining"))
+dtmq = DocumentTermMatrix(cq)
+
+mq =matrix(0,ncol=nTerms(dtm_tf),dimnames = list('q', Terms(dtm_tf)))
+mq[1,Terms(dtmq)] = 1
+mq
+#a
+sim2(as.matrix(dtm_bin),mq,method = 'cosine')
+#b
+sim2(as.matrix(dtm_tf),mq,method = 'cosine')
+#c
+sim2(as.matrix(dtm_tfidf),mq,method = 'cosine')
