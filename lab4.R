@@ -44,6 +44,6 @@ as.matrix(dtm_tfidf)
 #mining appears in all documents so it doesn't have any discriminating power
 
 #f
-sim2(as.matrix(dtm_tf))
-sim2(as.matrix(dtm_bin))
-sim2(as.matrix(dtm_tfidf))
+sim2(as.matrix(dtm_tf),method = 'cosine')
+sim2(as.matrix(dtm_bin),method = 'cosine')
+sim2(as.matrix(dtm_tfidf),method = 'cosine')
