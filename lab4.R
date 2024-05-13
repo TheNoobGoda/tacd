@@ -1,6 +1,9 @@
 library(tm)
 library(text2vec)
 library(wordcloud)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
 
 
 #1
@@ -104,4 +107,46 @@ findFreqTerms(dtm,lowfreq = 10)
 
 #h
 findAssocs(dtm,c("opec"),c(0.8))
+
+
+############################################4.4############################
+
+#a
+data(acq)
+inspect(head(acq))
+
+#b
+cleanup = function(docs,spec_words=NULL){
+  docs = tm_map(docs,content_transformer(tolower))
+  docs = tm_map(docs,removeNumbers)
+  docs = tm_map(docs,removeWords,stopwords("english"))
+  docs = tm_map(docs,removeWords, spec_words)
+  docs = tm_map(docs,removePunctuation)
+  docs = tm_map(docs,stripWhitespace)
+  docs = tm_map(docs,stemDocument)
+  docs
+}
+
+par(mfrow=c(1,2))
+wordcloud(acq)
+
+acq1 = cleanup(acq,c("said","the","and"))
+wordcloud(acq1)
+par(mfrow=c(1,1))
+
+#c
+dtm = DocumentTermMatrix(acq1)
+dtm
+
+#d
+mdf = as_tibble(as.matrix((dtm)))
+
+mdf_freq = mdf %>% 
+  select(findFreqTerms(dtm,nDocs(dtm)/2)) %>%
+  summarise_all(sum) %>%
+  gather() %>%
+  arrange(desc(value))
+
+mdf_freq$key = factor(mdf_freq$key, levels = mdf_freq$key[order(mdf_freq$values)])
+
 
