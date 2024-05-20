@@ -41,7 +41,7 @@ as.matrix(dtm_bin)
 
 #d
 dtm_tfidf = weightTfIdf(dtm)
-inspect(dtm_tfIif)
+inspect(dtm_tfidf)
 as.matrix(dtm_tfidf)
 
 #e
@@ -147,6 +147,45 @@ mdf_freq = mdf %>%
   gather() %>%
   arrange(desc(value))
 
-mdf_freq$key = factor(mdf_freq$key, levels = mdf_freq$key[order(mdf_freq$values)])
+mdf_freq$key = factor(mdf_freq$key, levels = mdf_freq$key[order(mdf_freq$value)])
+
+#e
+dists = dist(as.matrix((dtm)))
+Tree = hclust(dists)
+plot(Tree)
+
+#f
+
+
+#g
+h = hclust(dists,method = "ward.D")
+plot(h)
+
+#h
+Clusters = cutree(h,3)
+Clusters
+rect.hclust(h,3)
+
+#i
+c1 = dtm[Clusters == 1]
+c2 = dtm[Clusters == 2]
+c3 = dtm[Clusters == 3]
+
+plot.wordcloud = function(dtmc) {
+  mdf_c = as_tibble(as.matrix(dtmc)) %>%
+    summarise_all(sum) %>%
+    gather() %>%
+    arrange(desc(value))
+    wordcloud(mdf_c$key,mdf_C$value,min.freq = 5)
+}
+
+plot.wordcloud(c1)
+
+
+###############################################4.5############################
+
+#a
+
+
 
 
