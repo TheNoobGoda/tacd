@@ -4,6 +4,8 @@ library(wordcloud)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+library(e1071)
+library(performanceEstimation)
 
 
 #1
@@ -185,6 +187,46 @@ plot.wordcloud(c1)
 ###############################################4.5############################
 
 #a
+data("crude")
+data("acq")
+docs = c(acq[0:50],crude[1:20])
+
+cleanup = function(docs,spec_words=NULL){
+  docs = tm_map(docs,content_transformer(tolower))
+  docs = tm_map(docs,removeNumbers)
+  docs = tm_map(docs,removeWords,stopwords("english"))
+  docs = tm_map(docs,removeWords, spec_words)
+  docs = tm_map(docs,removePunctuation)
+  docs = tm_map(docs,stripWhitespace)
+  docs = tm_map(docs,stemDocument)
+  docs
+}
+
+docs = cleanup(docs,c("said","reuters","reuter"))
+
+#b
+dtm = DocumentTermMatrix(docs)
+
+#c
+dtm = removeSparseTerms(dtm,0.8)
+
+#d
+dat = cbind(data.frame(as.matrix(dtm),class = as.factor(c(rep("acq",50),rep("crude",20)))))
+dat
+
+#e
+exp = performanceEstimation(PredTask(class ~.,dat),
+                            c(Workflow(learner = "naiveBayes"),
+                                       workflowVariants(learner="svm",
+                                               learner.pars=
+                                                 list(kernel=c("linear","radial")))),
+                            EstimationTask(metrics = "err",method = CV())
+                            )
+
+#f
+summary(exp)
+
+plot(exp)
 
 
 
